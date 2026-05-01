@@ -1,0 +1,197 @@
+# NovaBite Restaurants – Full Menu
+
+## Appetizers
+
+### Truffle Mushroom Bruschetta
+- Price: $12.99
+- Description: Toasted sourdough topped with sautéed wild mushrooms, truffle oil, and shaved Parmesan.
+- Allergens: Gluten, Dairy
+- Dietary: Vegetarian
+- Calories: 320 kcal
+
+### Crispy Calamari
+- Price: $11.49
+- Description: Lightly battered calamari rings served with marinara sauce and lemon aioli.
+- Allergens: Gluten, Shellfish, Eggs
+- Dietary: None
+- Calories: 410 kcal
+
+### Mediterranean Hummus Platter
+- Price: $9.99
+- Description: House-made hummus with warm pita bread, cherry tomatoes, olives, and cucumber.
+- Allergens: Sesame, Gluten
+- Dietary: Vegan
+- Calories: 280 kcal
+
+### Spicy Tuna Tartare
+- Price: $14.99
+- Description: Fresh ahi tuna diced with avocado, soy-ginger dressing, and crispy wonton chips.
+- Allergens: Fish, Soy, Gluten
+- Dietary: None
+- Calories: 290 kcal
+
+## Main Courses
+
+### Grilled Atlantic Salmon
+- Price: $24.99
+- Description: Oven-grilled salmon fillet with roasted asparagus, quinoa pilaf, and lemon-dill sauce.
+- Allergens: Fish
+- Dietary: Gluten-Free
+- Calories: 520 kcal
+
+### Classic Beef Burger
+- Price: $16.99
+- Description: 200g Angus beef patty with cheddar, lettuce, tomato, pickles, and house sauce on a brioche bun. Served with fries.
+- Allergens: Gluten, Dairy, Eggs
+- Dietary: None
+- Calories: 780 kcal
+
+### Penne Arrabbiata (Vegan)
+- Price: $14.99
+- Description: Penne pasta tossed in a spicy tomato sauce with garlic, chili flakes, and fresh basil.
+- Allergens: Gluten
+- Dietary: Vegan
+- Calories: 450 kcal
+
+### Grilled Chicken Caesar Salad
+- Price: $15.49
+- Description: Romaine lettuce with grilled chicken breast, croutons, Parmesan, and Caesar dressing.
+- Allergens: Gluten, Dairy, Eggs, Fish (anchovies in dressing)
+- Dietary: None
+- Calories: 480 kcal
+
+### Mushroom Risotto
+- Price: $17.99
+- Description: Creamy Arborio rice with wild mushrooms, white wine, Parmesan, and truffle oil.
+- Allergens: Dairy
+- Dietary: Vegetarian, Gluten-Free
+- Calories: 550 kcal
+
+### Thai Green Curry
+- Price: $16.49
+- Description: Vegetables and tofu simmered in coconut milk green curry, served with jasmine rice.
+- Allergens: Soy
+- Dietary: Vegan, Gluten-Free
+- Calories: 470 kcal
+
+### BBQ Baby Back Ribs
+- Price: $26.99
+- Description: Slow-cooked pork ribs glazed with house BBQ sauce, served with coleslaw and cornbread.
+- Allergens: Gluten, Dairy
+- Dietary: None
+- Calories: 890 kcal
+
+### Pan-Seared Duck Breast
+- Price: $28.99
+- Description: Duck breast with cherry reduction sauce, sweet potato purée, and sautéed greens.
+- Allergens: None
+- Dietary: Gluten-Free
+- Calories: 610 kcal
+
+## Pasta & Noodles
+
+### Spaghetti Bolognese
+- Price: $15.99
+- Description: Classic beef ragù slow-cooked for 4 hours, served over spaghetti with Parmesan.
+- Allergens: Gluten, Dairy
+- Dietary: None
+- Calories: 620 kcal
+
+### Vegan Pad Thai
+- Price: $14.49
+- Description: Rice noodles stir-fried with tofu, bean sprouts, peanuts, and tamarind sauce.
+- Allergens: Peanuts, Soy
+- Dietary: Vegan, Gluten-Free
+- Calories: 510 kcal
+
+### Lobster Linguine
+- Price: $32.99
+- Description: Fresh linguine with lobster tail, cherry tomatoes, white wine, garlic, and chili.
+- Allergens: Shellfish, Gluten
+- Dietary: None
+- Calories: 580 kcal
+
+## Desserts
+
+### Tiramisu
+- Price: $9.99
+- Description: Classic Italian dessert with layers of espresso-soaked ladyfingers and mascarpone cream.
+- Allergens: Gluten, Dairy, Eggs
+- Dietary: Vegetarian
+- Calories: 380 kcal
+
+### Chocolate Lava Cake
+- Price: $10.99
+- Description: Warm dark chocolate cake with a molten center, served with vanilla bean ice cream.
+- Allergens: Gluten, Dairy, Eggs
+- Dietary: Vegetarian
+- Calories: 520 kcal
+
+### Vegan Mango Sorbet
+- Price: $7.99
+- Description: Refreshing mango sorbet made with real Alphonso mangoes. Three scoops.
+- Allergens: None
+- Dietary: Vegan, Gluten-Free
+- Calories: 180 kcal
+
+### New York Cheesecake
+- Price: $9.49
+- Description: Dense, creamy cheesecake with graham cracker crust and mixed berry compote.
+- Allergens: Gluten, Dairy, Eggs
+- Dietary: Vegetarian
+- Calories: 450 kcal
+
+## Beverages
+
+### Fresh Squeezed Orange Juice
+- Price: $5.99
+- Dietary: Vegan, Gluten-Free
+
+### Sparkling Lemonade
+- Price: $4.99
+- Dietary: Vegan, Gluten-Free
+
+### Cappuccino
+- Price: $4.49
+- Allergens: Dairy
+
+### Matcha Latte
+- Price: $5.49
+- Allergens: Dairy
+- Note: Can be made with oat milk for dairy-free option.
+
+### House Red Wine (Glass)
+- Price: $8.99
+- Description: Medium-bodied Cabernet Sauvignon.
+
+### House White Wine (Glass)
+- Price: $8.49
+- Description: Crisp Pinot Grigio.
+
+### Craft IPA (Draft)
+- Price: $7.99
+- Allergens: Gluten
+
+## Kids Menu
+
+### Mini Cheese Pizza
+- Price: $7.99
+- Allergens: Gluten, Dairy
+- Calories: 350 kcal
+
+### Chicken Tenders & Fries
+- Price: $8.99
+- Allergens: Gluten, Eggs
+- Calories: 420 kcal
+
+### Mac & Cheese
+- Price: $7.49
+- Allergens: Gluten, Dairy
+- Calories: 380 kcal
+
+## Notes
+- All prices are in USD and include applicable taxes.
+- The chicken served at NovaBite is grilled, not fried (except for Chicken Tenders on the Kids Menu).
+- NovaBite does NOT have vegan pasta labeled as "vegan pasta." However, the Penne Arrabbiata and Thai Green Curry are fully vegan main courses. The Vegan Pad Thai is also available.
+- Gluten-free pasta substitution is available for any pasta dish for an additional $2.00.
+- NovaBite does NOT serve sushi, tacos, or pizza (except Kids Mini Pizza).
