@@ -2,24 +2,28 @@
 
 A production-style multi-agent AI system for **NovaBite Restaurants**, built with LangChain. The system uses **RAG** for grounded knowledge retrieval, **tool-calling agents** for live operations, **sub-agent delegation** for clean separation of concerns, and **conversation memory** for multi-turn continuity.
 
----
-
-## Table of Contents
-
-1. [Architecture Overview](#architecture-overview)
-2. [RAG Design Decisions](#rag-design-decisions)
-3. [Tool Simulation (MCP-Style)](#tool-simulation-mcp-style)
-4. [Memory Design](#memory-design)
-5. [Hallucination Prevention](#hallucination-prevention)
-6. [Setup & Installation](#setup--installation)
-7. [Usage](#usage)
-8. [Example Queries & Outputs](#example-queries--outputs)
-9. [Project Structure](#project-structure)
-10. [Assumptions](#assumptions)
+> **Author:** Mohammed Haitham Mohammed
+> **Submission:** AI Engineer Technical Assessment — Fekra
 
 ---
 
-## Architecture Overview
+## 📋 Table of Contents
+
+1. [Architecture Overview](#-architecture-overview)
+2. [Live Demo Screenshots](#-live-demo-screenshots)
+3. [RAG Design Decisions](#-rag-design-decisions)
+4. [Tool Simulation (MCP-Style)](#-tool-simulation-mcp-style)
+5. [Memory Design](#-memory-design)
+6. [Hallucination Prevention](#-hallucination-prevention)
+7. [Setup & Installation](#-setup--installation)
+8. [Usage](#-usage)
+9. [Example Queries & Outputs](#-example-queries--outputs)
+10. [Project Structure](#-project-structure)
+11. [Assumptions](#-assumptions)
+
+---
+
+## 🏗️ Architecture Overview
 
 ```
                          ┌───────────────┐
@@ -74,14 +78,48 @@ A production-style multi-agent AI system for **NovaBite Restaurants**, built wit
 
 ### Why This Architecture?
 
-- **Separation of concerns**: The orchestrator knows *how to route* but not *how to answer*. Business logic lives in sub-agents.
-- **Testability**: Each sub-agent can be unit-tested independently.
-- **Extensibility**: Adding a new capability (e.g., a "Delivery Agent") means creating a new sub-agent and adding one routing case — no changes to existing agents.
-- **Hallucination control**: The RAG agent has strict grounding rules. The Operations agent only returns real tool outputs. Neither can "make things up."
+- **Separation of concerns:** The orchestrator knows *how to route* but not *how to answer*. Business logic lives in sub-agents.
+- **Testability:** Each sub-agent can be unit-tested independently.
+- **Extensibility:** Adding a new capability (e.g., a "Delivery Agent") means creating a new sub-agent and adding one routing case — no changes to existing agents.
+- **Hallucination control:** The RAG agent has strict grounding rules. The Operations agent only returns real tool outputs. Neither can "make things up."
 
 ---
 
-## RAG Design Decisions
+## 📸 Live Demo Screenshots
+
+The screenshots below are from real interactive sessions and demonstrate the system working end-to-end.
+
+### 1. System Initialization
+
+The system boots, loads the FAISS vector store, initializes both sub-agents, and shows the welcome banner.
+
+**System Initialization**
+
+<img width="1668" height="802" alt="System Initialization" src="https://github.com/user-attachments/assets/d1ae24c9-87ba-4f47-8132-cf4a7ab99038" />
+
+### 2. Intent Classification & Routing
+
+The orchestrator classifies user intent and routes to the correct sub-agent. Notice how it correctly routes `KNOWLEDGE`, `OPERATIONS`, and `GENERAL` queries to different paths.
+
+<img width="1671" height="781" alt="image" src="https://github.com/user-attachments/assets/7fd7d190-468b-4c58-9d40-7a28aaca8a13" />
+
+### 3. Operations Agent — Live Tool Call
+
+The operations agent invokes the `get_today_special` tool with the correct parameters and formats the JSON response into a friendly answer. The `> Entering new AgentExecutor chain...` output shows the LangChain tool-calling loop in action.
+
+<img width="1688" height="791" alt="image" src="https://github.com/user-attachments/assets/3a1eb3a4-ea6a-40ac-8f72-859e33c7c4a7" />
+
+### 4. RAG Agent — Grounded Answers
+
+The RAG agent retrieves relevant chunks from the FAISS store and generates a grounded answer about the Premium Catering Package — pricing, inclusions, and availability are pulled directly from the knowledge base.
+
+<img width="1680" height="869" alt="image" src="https://github.com/user-attachments/assets/1c4a72e3-5b30-4a09-87d1-cd72700a68c1" />
+
+> **Note:** Replace these screenshots with your own captured terminal output. Place your PNG files in `docs/screenshots/` with the filenames above.
+
+---
+
+## 🔍 RAG Design Decisions
 
 ### Document Domains (2 of 7 chosen)
 
@@ -114,9 +152,9 @@ A production-style multi-agent AI system for **NovaBite Restaurants**, built wit
 
 ### Retrieval Strategy
 
-- **Method**: Similarity search (cosine via FAISS inner product on normalized vectors)
-- **Top-K**: 4 — retrieves the 4 most relevant chunks per query
-- **Why K=4**: Provides enough context to answer most questions (a menu item + its neighbors), while keeping the prompt lean to reduce noise and hallucination risk. Tested with K=2 (missed cross-section answers) and K=6 (introduced irrelevant chunks).
+- **Method:** Similarity search (cosine via FAISS inner product on normalized vectors)
+- **Top-K:** 4 — retrieves the 4 most relevant chunks per query
+- **Why K=4:** Provides enough context to answer most questions (a menu item + its neighbors), while keeping the prompt lean to reduce noise and hallucination risk. Tested with K=2 (missed cross-section answers) and K=6 (introduced irrelevant chunks).
 
 ### Context Filtering & Grounding
 
@@ -128,15 +166,15 @@ The RAG agent's system prompt enforces strict rules:
 
 ---
 
-## Tool Simulation (MCP-Style)
+## 🛠️ Tool Simulation (MCP-Style)
 
 ### Approach
 
 The Operations Agent uses **LangChain tool-calling** (`create_openai_tools_agent`) with three tools decorated with `@tool`. Each tool simulates what a real MCP server or backend API would return:
 
-- **Realistic inputs**: Typed parameters with validation (date format, branch name).
-- **Realistic outputs**: JSON responses with `status`, structured data, and error messages.
-- **Deterministic simulation**: Availability uses a seeded random generator based on `hash(branch + date + time)`, so the same query returns the same result within a session — mimicking a real database.
+- **Realistic inputs:** Typed parameters with validation (date format, branch name).
+- **Realistic outputs:** JSON responses with `status`, structured data, and error messages.
+- **Deterministic simulation:** Availability uses a seeded random generator based on `hash(branch + date + time)`, so the same query returns the same result within a session — mimicking a real database.
 
 ### Implemented Tools (3)
 
@@ -155,7 +193,7 @@ A simulated approach was chosen because:
 
 ---
 
-## Memory Design
+## 🧠 Memory Design
 
 ### Implementation
 
@@ -171,10 +209,10 @@ A simulated approach was chosen because:
 
 ### How Memory Flows
 
-1. **Shared memory**: The orchestrator owns a single `ConversationBufferWindowMemory` instance.
-2. **Read by sub-agents**: Both the RAG agent and Operations agent receive conversation history as input, so they can resolve follow-up references ("Which of those is gluten-free?" requires knowing what "those" refers to).
-3. **Written by orchestrator**: After each exchange, the orchestrator saves `{input, output}` to memory.
-4. **Resettable**: The user can type `clear` to reset memory (useful for demos).
+1. **Shared memory:** The orchestrator owns a single `ConversationBufferWindowMemory` instance.
+2. **Read by sub-agents:** Both the RAG agent and Operations agent receive conversation history as input, so they can resolve follow-up references ("Which of those is gluten-free?" requires knowing what "those" refers to).
+3. **Written by orchestrator:** After each exchange, the orchestrator saves `{input, output}` to memory.
+4. **Resettable:** The user can type `clear` to reset memory (useful for demos).
 
 ### Memory Continuity Example
 
@@ -193,7 +231,7 @@ User: "How much does the Thai Green Curry cost?"
 
 ---
 
-## Hallucination Prevention
+## 🛡️ Hallucination Prevention
 
 Hallucination prevention is enforced at **multiple layers**:
 
@@ -207,7 +245,7 @@ Hallucination prevention is enforced at **multiple layers**:
 
 ---
 
-## Setup & Installation
+## ⚙️ Setup & Installation
 
 ### Prerequisites
 
@@ -218,7 +256,7 @@ Hallucination prevention is enforced at **multiple layers**:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/ai-junior-test.git
+git clone https://github.com/Mohammed20037/ai-junior-test.git
 cd ai-junior-test
 
 # 2. Create a virtual environment (recommended)
@@ -248,7 +286,7 @@ Subsequent runs load the cached index instantly. Use `python main.py --rebuild` 
 
 ---
 
-## Usage
+## 💬 Usage
 
 ### Interactive Chat
 
@@ -275,19 +313,19 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 
 ---
 
-## Example Queries & Outputs
+## 🎯 Example Queries & Outputs
 
 ### RAG – Menu
 
 ```
-👤 You: Do you have vegan pasta?
-🧠 [Orchestrator] Intent classified as: KNOWLEDGE
-📚 [Orchestrator] Routing to RAG Agent …
+[You] Do you have vegan pasta?
+[Orchestrator] Intent classified as: KNOWLEDGE
+[Orchestrator] Routing to RAG Agent ...
 
-🤖 NovaBite: NovaBite doesn't have an item specifically called "vegan pasta,"
-   but we do have vegan pasta dishes! The **Penne Arrabbiata** ($14.99) is fully
+[NovaBite] NovaBite doesn't have an item specifically called "vegan pasta,"
+   but we do have vegan pasta dishes! The Penne Arrabbiata ($14.99) is fully
    vegan — it's penne pasta in a spicy tomato sauce with garlic, chili flakes,
-   and fresh basil (contains gluten). We also have the **Vegan Pad Thai** ($14.49)
+   and fresh basil (contains gluten). We also have the Vegan Pad Thai ($14.49)
    made with rice noodles, tofu, and tamarind sauce (gluten-free, but contains
    peanuts and soy). Additionally, any pasta dish can be made with gluten-free
    pasta for an extra $2.00.
@@ -296,22 +334,22 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 ### RAG – Policies
 
 ```
-👤 You: What are your opening hours on weekends?
-🧠 [Orchestrator] Intent classified as: KNOWLEDGE
+[You] What are your opening hours on weekends?
+[Orchestrator] Intent classified as: KNOWLEDGE
 
-🤖 NovaBite: On weekends (Saturday & Sunday):
-   • Downtown & Midtown branches: 10:00 AM – 11:30 PM
-   • Brooklyn Heights: 9:00 AM – 11:00 PM (brunch served 9:00 AM – 1:00 PM)
+[NovaBite] On weekends (Saturday & Sunday):
+   - Downtown & Midtown branches: 10:00 AM – 11:30 PM
+   - Brooklyn Heights: 9:00 AM – 11:00 PM (brunch served 9:00 AM – 1:00 PM)
    The kitchen closes 30 minutes before closing time at all branches.
 ```
 
 ### RAG – Events
 
 ```
-👤 You: What's included in the premium catering package?
-🧠 [Orchestrator] Intent classified as: KNOWLEDGE
+[You] What's included in the premium catering package?
+[Orchestrator] Intent classified as: KNOWLEDGE
 
-🤖 NovaBite: The Premium Catering Package is $65 per person (minimum 20 guests)
+[NovaBite] The Premium Catering Package is $65 per person (minimum 20 guests)
    and includes: Chef's tasting menu (5 courses), premium wine pairing
    (2 glasses per guest), dedicated wait staff, custom table setup and floral
    arrangement, and a complimentary dessert bar. It must be booked at least
@@ -321,11 +359,11 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 ### Operations – Table Availability
 
 ```
-👤 You: Is there a table available at downtown tonight at 7pm?
-🧠 [Orchestrator] Intent classified as: OPERATIONS
-⚙️  [Orchestrator] Routing to Operations Agent …
+[You] Is there a table available at downtown tonight at 7pm?
+[Orchestrator] Intent classified as: OPERATIONS
+[Orchestrator] Routing to Operations Agent ...
 
-🤖 NovaBite: I checked the Downtown branch for tonight at 7:00 PM. There are
+[NovaBite] I checked the Downtown branch for tonight at 7:00 PM. There are
    currently 3 tables available out of 16 total. It's a busy evening, so I'd
    recommend booking soon! Would you like me to reserve a table for you?
 ```
@@ -333,16 +371,16 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 ### Operations – Booking
 
 ```
-👤 You: Book a table for 4 at Midtown on 2025-07-15 at 19:00 under John
-🧠 [Orchestrator] Intent classified as: OPERATIONS
+[You] Book a table for 4 at Midtown on 2025-07-15 at 19:00 under John
+[Orchestrator] Intent classified as: OPERATIONS
 
-🤖 NovaBite: Your table has been booked! Here are the details:
-   • Name: John
-   • Branch: Midtown
-   • Date: July 15, 2025
-   • Time: 7:00 PM
-   • Party Size: 4
-   • Booking Reference: NB-47283
+[NovaBite] Your table has been booked! Here are the details:
+   - Name: John
+   - Branch: Midtown
+   - Date: July 15, 2025
+   - Time: 7:00 PM
+   - Party Size: 4
+   - Booking Reference: NB-47283
    Please remember that cancellations must be made at least 2 hours before
    your reserved time.
 ```
@@ -350,20 +388,38 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 ### Operations – Today's Special
 
 ```
-👤 You: What's today's special at the Brooklyn branch?
-🧠 [Orchestrator] Intent classified as: OPERATIONS
+[You] What's today's special at the Brooklyn branch?
+[Orchestrator] Intent classified as: OPERATIONS
 
-🤖 NovaBite: Today's special at the Brooklyn branch is the **Shrimp & Grits**
-   ($20.99) — Gulf shrimp over creamy stone-ground grits with andouille sausage.
+[NovaBite] Today's special at our Brooklyn branch is Shrimp & Grits for $20.99.
+   It's a delicious dish featuring Gulf shrimp over creamy stone-ground grits
+   with andouille sausage.
 ```
+
+### Ambiguity Handling
+
+```
+[You] what is the menu for today ?
+[Orchestrator] Intent classified as: OPERATIONS
+
+[NovaBite] Could you please specify which branch you're interested in?
+   We have three branches: downtown, midtown, and brooklyn.
+
+[You] 3
+[Orchestrator] Intent classified as: OPERATIONS
+
+[NovaBite] Today's special at our Brooklyn branch is Shrimp & Grits ($20.99) ...
+```
+
+> The orchestrator + memory work together: when the user replied with just "3" after seeing the branch list, the agent correctly resolved it to "brooklyn" using conversation history.
 
 ### Hallucination Prevention
 
 ```
-👤 You: Do you serve sushi?
-🧠 [Orchestrator] Intent classified as: KNOWLEDGE
+[You] Do you serve sushi?
+[Orchestrator] Intent classified as: KNOWLEDGE
 
-🤖 NovaBite: No, NovaBite does not serve sushi. Our menu focuses on Western and
+[NovaBite] No, NovaBite does not serve sushi. Our menu focuses on Western and
    Mediterranean cuisine. However, if you're in the mood for seafood, we have
    some great options like the Grilled Atlantic Salmon ($24.99), Lobster
    Linguine ($32.99), and the Spicy Tuna Tartare appetizer ($14.99).
@@ -372,23 +428,23 @@ This runs predefined queries covering all categories: RAG, operations, memory co
 ### Memory Continuity
 
 ```
-👤 You: What vegan options do you have?
-🤖 NovaBite: We have several vegan options: Penne Arrabbiata ($14.99),
+[You] What vegan options do you have?
+[NovaBite] We have several vegan options: Penne Arrabbiata ($14.99),
    Thai Green Curry ($16.49), Vegan Pad Thai ($14.49), Mediterranean
    Hummus Platter ($9.99), and Vegan Mango Sorbet ($7.99).
 
-👤 You: Which of those is gluten-free?
-🤖 NovaBite: Of the vegan options I mentioned, the Thai Green Curry ($16.49)
+[You] Which of those is gluten-free?
+[NovaBite] Of the vegan options I mentioned, the Thai Green Curry ($16.49)
    and the Vegan Mango Sorbet ($7.99) are both gluten-free. The Vegan Pad
    Thai is also gluten-free but contains peanuts and soy.
 
-👤 You: Great, how much is the curry?
-🤖 NovaBite: The Thai Green Curry is $16.49.
+[You] Great, how much is the curry?
+[NovaBite] The Thai Green Curry is $16.49.
 ```
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 novabite-ai-assistant/
@@ -396,6 +452,7 @@ novabite-ai-assistant/
 ├── config.py                      # Centralized configuration
 ├── requirements.txt               # Python dependencies
 ├── .env.example                   # Environment variable template
+├── .gitignore
 │
 ├── agents/
 │   ├── __init__.py
@@ -421,30 +478,42 @@ novabite-ai-assistant/
 │   │   └── policies.txt           # Branch info, hours, policies, events
 │   └── vector_store/              # Persisted FAISS index (auto-generated)
 │
-└── examples/
-    └── example_queries.py         # Demo script with test scenarios
+├── examples/
+│   └── example_queries.py         # Demo script with test scenarios
+│
+└── docs/
+    └── screenshots/               # Live demo screenshots
 ```
 
 ---
 
-## Assumptions
+## 📝 Assumptions
 
-1. **LLM Provider**: OpenAI GPT-4o-mini is used. The system is designed so swapping to another LangChain-compatible LLM (Anthropic, Ollama, etc.) requires changing only `config.py` and the import in agent files.
+1. **LLM Provider:** OpenAI GPT-4o-mini is used. The system is designed so swapping to another LangChain-compatible LLM (Anthropic, Ollama, etc.) requires changing only `config.py` and the import in agent files.
 
-2. **Single-user**: The system runs as a single-user CLI. In production, the memory and orchestrator would be instantiated per-session (e.g., per WebSocket connection).
+2. **Single-user:** The system runs as a single-user CLI. In production, the memory and orchestrator would be instantiated per-session (e.g., per WebSocket connection).
 
-3. **Tool simulation**: Tools simulate backend responses with deterministic randomization. In production, these would be HTTP calls to real MCP servers or internal APIs. The tool interfaces are designed to be swap-ready.
+3. **Tool simulation:** Tools simulate backend responses with deterministic randomization. In production, these would be HTTP calls to real MCP servers or internal APIs. The tool interfaces are designed to be swap-ready.
 
-4. **Knowledge base scope**: Two domains were implemented (Menu + Policies/Hours) out of the seven listed. Adding more domains requires only dropping new `.txt` files into `data/knowledge_base/` and running with `--rebuild`.
+4. **Knowledge base scope:** Two domains were implemented (Menu + Policies/Hours) out of the seven listed. Adding more domains requires only dropping new `.txt` files into `data/knowledge_base/` and running with `--rebuild`.
 
-5. **Embedding cost**: On first run, embedding ~50 chunks costs approximately $0.001. The FAISS index is cached to disk, so subsequent runs incur zero embedding cost.
+5. **Embedding cost:** On first run, embedding ~50 chunks costs approximately $0.001. The FAISS index is cached to disk, so subsequent runs incur zero embedding cost.
 
-6. **Date handling in tools**: The `book_table` and `check_table_availability` tools accept future dates without validation against opening hours. A production system would cross-reference holiday closures and operating hours.
+6. **Date handling in tools:** The `book_table` and `check_table_availability` tools accept future dates without validation against opening hours. A production system would cross-reference holiday closures and operating hours.
 
-7. **No authentication**: No user authentication is implemented. The `check_loyalty_points` tool was not implemented because it would require a user identity system. The three implemented tools (`check_table_availability`, `book_table`, `get_today_special`) cover the required minimum of two.
+7. **No authentication:** No user authentication is implemented. The `check_loyalty_points` tool was not implemented because it would require a user identity system. The three implemented tools (`check_table_availability`, `book_table`, `get_today_special`) cover the required minimum of two.
 
 ---
 
-## License
+## 👤 Author
+
+**Mohammed Haitham Mohammed**
+AI Engineer | LLMs · RAG · Intelligent Automation
+📧 mohammedhaitham17@outlook.com
+🔗 [GitHub](https://github.com/Mohammed20037)
+
+---
+
+## 📄 License
 
 Built as a technical assessment for the AI Engineer position at Fekra.
